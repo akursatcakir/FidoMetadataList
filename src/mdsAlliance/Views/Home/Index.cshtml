@@ -1,0 +1,70 @@
+﻿@model List<mdsAlliance.Models.MetaData>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+</p>
+<table class="table">
+    <tr>
+
+        @foreach (var prop in Model.First().GetType().GetProperties())
+        {
+            @if (prop.Name != "status")
+            {
+                <th>
+                    @prop.Name
+                </th>
+            }
+
+        }
+        @foreach (var prop in Model.First().status.First().GetType().GetProperties())
+        {
+            <th>
+                @prop.Name
+            </th>
+        }
+    </tr>
+    @{int c = 0; }
+    @foreach (var item in Model)
+    {c++;
+
+        @foreach (var state in item.status)
+        {
+                <tr style="background-color:@(c%2==0?"lightgray":"white")">
+
+
+                    @foreach (var prop in item.GetType().GetProperties())
+                    {
+                        @if (prop.Name != "status")
+                        {
+                            <td>
+                                @if (state == item.status.First())
+                                {
+                                    @prop.GetValue(item)
+                                }
+                            </td>
+                        }
+                    }
+
+
+                    @foreach (var prop in state.GetType().GetProperties())
+                    {
+                        <td>
+                            @prop.GetValue(state)
+                        </td>
+                    }
+
+                </tr>
+
+            }
+
+        }
+</table>
